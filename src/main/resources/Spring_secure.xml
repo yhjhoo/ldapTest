@@ -30,10 +30,10 @@
 		<property name="referral" value="follow" />
 	</bean>
 
-    <bean id="ldapProvider" class="org.springframework.security.providers.ldap.LdapAuthenticationProvider">
+    <bean id="ldapProvider" class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
         <s:custom-authentication-provider />
 		<constructor-arg>
-			<bean class="org.springframework.security.providers.ldap.authenticator.BindAuthenticator">
+			<bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
 				<constructor-arg ref="contextSource"/>
 				 <property name="userSearch">
 					<bean id="userSearch" class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
