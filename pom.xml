@@ -20,16 +20,26 @@
   	<dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-context</artifactId>
-  		<version>3.2.8.RELEASE</version>
+  		<version>3.2.4.RELEASE</version>
   	</dependency>
   	<dependency>
   		<groupId>org.springframework.security</groupId>
   		<artifactId>spring-security-core</artifactId>
   		<version>3.2.4.RELEASE</version>
   	</dependency>
+  	<dependency> 
+	   <groupId>org.springframework.security</groupId>
+	   <artifactId>spring-security-config</artifactId>
+	   <version>3.2.4.RELEASE</version>
+	</dependency>
   	<dependency>
   		<groupId>org.springframework.security</groupId>
   		<artifactId>spring-security-ldap</artifactId>
+  		<version>3.2.4.RELEASE</version>
+	</dependency>
+	<dependency>
+  		<groupId>org.springframework   </groupId>
+  		<artifactId>spring-tx</artifactId>
   		<version>3.2.4.RELEASE</version>
 	</dependency>
   	<dependency>

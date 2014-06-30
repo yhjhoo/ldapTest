@@ -21,6 +21,8 @@ import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.AggregateDirContextProcessor;
 //import org.springframework.security.userdetails.ldap.LdapUserDetailsImpl;
+import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
+import org.springframework.security.ldap.authentication.BindAuthenticator;
 
 
 
@@ -32,19 +34,23 @@ public class LdapTest {
 //					"WebContent/WEB-INF/spring/Spring_database.xml", 
 //					"WebContent/WEB-INF/spring/Spring_admin.xml"});
 	static ApplicationContext ctx = new ClassPathXmlApplicationContext("Spring_secure.xml");
+//	static ApplicationContext ctx = null;
 	private final Log log = LogFactory.getLog(this.getClass());
 	
 	static LdapTemplate ldapTemp = (LdapTemplate) ctx.getBean("ldapTemplate");
+//	static LdapTemplate ldapTemp;
 	
-	static LdapUserDAO ldapUserDAO = (LdapUserDAO) ctx.getBean("LdapUserDAO");
+	//static LdapUserDAO ldapUserDAO = (LdapUserDAO) ctx.getBean("LdapUserDAO");
+	static LdapUserDAO ldapUserDAO;
 	@Test
 	public void testLdap(){
 		LdapTest test = new LdapTest();
-		assertTrue(test._authLdap("domain\\userName", "password"));
+		//assertTrue(test._authLdap("domain\\userName", "password"));
+		assertTrue(test._authLdap("", ""));
 	}
 	
 	private boolean _authLdap(String userName, String password){
-		String ldapHost = "ldap://192.168.56.101:389"; // ldap host + port number
+		String ldapHost = "ldap://10.28.68.108:389"; // ldap host + port number
 		
 		Properties props = new Properties();
 		props.put(Context.INITIAL_CONTEXT_FACTORY,
@@ -73,6 +79,7 @@ public class LdapTest {
 	@Test
 	public void springLdapTest() {
 		String param = "Prince";
+		
 		String ldapQuery = "(&(objectCategory=person)(objectClass=user)" +
 //								"(|" +
 //									"(cn=*" + param +  "*)" +
@@ -83,6 +90,8 @@ public class LdapTest {
 //									"(sAMAccountName="+ param + ")" +
 //								")" +
 							")";
+		String accountName = "huajie11";
+		ldapQuery = "(&(objectClass=*)(|(cn=*"+accountName+")(mail=*" + accountName + "*)))";
 		List<Object> list = ldapTemp.search("", ldapQuery,
 				new AttributesMapper() {
 					public Object mapFromAttributes(Attributes attrs)
@@ -132,6 +141,8 @@ public class LdapTest {
 		
 		//System.out.println("CountLimit" + searchControls.getCountLimit() );
 		
+		String accountName = "dev";
+		ldapQuery = "(&(objectClass=*)(|(cn=*"+accountName+")(mail=*" + accountName + "*)))";
 		List<Object> list = ldapTemp.search("", ldapQuery, searchControls, 
 				new AttributesMapper() {
 				public Object mapFromAttributes(Attributes attrs)
