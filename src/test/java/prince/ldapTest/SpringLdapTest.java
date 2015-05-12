@@ -122,7 +122,7 @@ public class SpringLdapTest {
 	@Test
 	public void testSearchUser() {
 		Long start = System.currentTimeMillis();
-		List<LdapUser> list = ldapUserDAO.searchUser("yhjhoo");
+		List<LdapUser> list = ldapUserDAO.searchUser("administrator");
 		assertNotNull(list);
 
 		System.out.println("ldapUserSize: " + list.size());

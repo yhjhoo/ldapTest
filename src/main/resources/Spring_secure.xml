@@ -6,7 +6,7 @@
     http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
    	<bean id="contextSource" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
-		<constructor-arg value="ldap://192.168.56.107:389" />
+		<constructor-arg value="ldap://192.168.0.107:389" />
 		<property name="userDn" value="CN=Yang Hua Jie,CN=Users,DC=local,DC=prince,DC=me" />
 		<property name="password" value="Password@123" />
 		<property name="base" value="CN=Users,DC=local,DC=prince,DC=me"/>
