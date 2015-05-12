@@ -1,37 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:s="http://www.springframework.org/schema/security"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
-    <s:http >
-    	<s:intercept-url pattern="/login.jsp" filters="none" />
-    	<s:intercept-url pattern="/acessDenied.html" filters="none" />
-    	<s:intercept-url pattern="/services/**" filters="none"  />
-    	<s:intercept-url pattern="/css/**" filters="none" />
-    	<s:intercept-url pattern="/js/**" filters="none" />
-    	<s:intercept-url pattern="/images/**" filters="none" />
-    	<s:intercept-url pattern="/failure.do" filters="none" />
-    	
-        <s:intercept-url pattern="/**" 	access="ROLE_USER, ROLE_ADMIN"  />
-        <s:form-login login-page="/login.jsp" authentication-failure-url="/failure.do"/>
-        <s:logout invalidate-session="true" />
-        <!-- <s:form-login default-target-url='/home.do'  always-use-default-target="false" />
-        <s:logout invalidate-session="true" />-->
-        <!-- <s:http-basic/> -->
-    </s:http>
+	xmlns:s="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-	<bean id="contextSource" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
-		<constructor-arg value="ldap://192.168.56.101:389" />
-		<property name="userDn" value="CN=userName,OU=groupName,DC=domainName,DC=local" />
-		<property name="password" value="ldapPassword" />
-		<property name="base" value="OU=groupName,DC=domainName,DC=local"/>
+   	<bean id="contextSource" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
+		<constructor-arg value="ldap://192.168.56.107:389" />
+		<property name="userDn" value="CN=Yang Hua Jie,CN=Users,DC=local,DC=prince,DC=me" />
+		<property name="password" value="Password@123" />
+		<property name="base" value="CN=Users,DC=local,DC=prince,DC=me"/>
 		<property name="referral" value="follow" />
 	</bean>
 
     <bean id="ldapProvider" class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
-        <s:custom-authentication-provider />
+        <!-- <s:custom-authentication-provider /> -->
 		<constructor-arg>
 			<bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
 				<constructor-arg ref="contextSource"/>
@@ -44,7 +27,7 @@
 				</property>
 			</bean>
 		</constructor-arg>
-		<constructor-arg> 
+		<!-- <constructor-arg> 
 			<bean class="prince.ldapTest">
 				<constructor-arg ref="contextSource" />
 				<constructor-arg value="" />
@@ -53,18 +36,18 @@
 				<property name="rolePrefix" value="ROLE_"/>
 				<property name="searchSubtree" value="true"/>
 				<property name="convertToUpperCase" value="true"/>
-				<!-- <property name="userDAO" ref="UserDAO"/>-->
+				<property name="userDAO" ref="UserDAO"/>
 			</bean>
-		</constructor-arg>
+		</constructor-arg> -->
     </bean>
 
 	
-
 	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">  
         <constructor-arg ref="contextSource" />  
     </bean>
-    
-    <bean id="LdapUserDAO" class="com.gnsg.common.security.dao.LdapUserDAO">  
+
+	
+	<bean id="LdapUserDAO" class="prince.ldapTest.LdapUserDAO">  
         <property name="ldapTemp" ref="ldapTemplate"/>  
     </bean>
 
