@@ -1,26 +1,37 @@
 package prince.ldapTest;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Properties;
 
-import javax.naming.Context;
+import javax.naming.AuthenticationException;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
-import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.ldap.control.SortControlDirContextProcessor;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.AggregateDirContextProcessor;
 //import org.springframework.security.userdetails.ldap.LdapUserDetailsImpl;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -38,10 +49,14 @@ public class SpringLdapTest {
 	
 	static LdapUserDAO ldapUserDAO = (LdapUserDAO) ctx.getBean("LdapUserDAO");
 	
+//	@Rule
+//	public ExpectedException exception = ExpectedException.none();
+	
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void springLdapTest() {
+		System.setProperty("javax.net.ssl.trustStore", "/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home/jre/lib/security/cacerts");
 		String param = "Prince";
 		String ldapQuery = "(&(objectCategory=person)(objectClass=user)" +
 //								"(|" +
@@ -132,4 +147,42 @@ public class SpringLdapTest {
 			System.out.println(user);
 		}
 	}
+	
+	@Test
+	public void testUpdateUserPassword() {
+		System.setProperty("javax.net.ssl.trustStore", "/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home/jre/lib/security/cacerts");
+		ldapUserDAO.changePassword("Yang Hua Jie", "Password@123");
+		ldapUserDAO.login("Yang Hua Jie", "Password@123");
+		
+//		throw new AuthenticationException();
+//		exception.expect(AuthenticationException.class);
+		try {
+			ldapUserDAO.login("Yang Hua Jie", "Password!123");
+		} catch (Exception e) {
+			log.info("=========================");
+//			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testDisableUser() {
+		System.setProperty("javax.net.ssl.trustStore", "/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home/jre/lib/security/cacerts");
+		ldapUserDAO.disableUser("Yang Hua Jie");
+		
+		try {
+			ldapUserDAO.login("Yang Hua Jie", "Password@123");
+		} catch (Exception e) {
+			log.info("=========================");
+		}
+	}
+	
+	@Test
+	public void testEnableUser() {
+		System.setProperty("javax.net.ssl.trustStore", "/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home/jre/lib/security/cacerts");
+		ldapUserDAO.enableUser("Yang Hua Jie");
+		ldapUserDAO.login("Yang Hua Jie", "Password@123");
+	}
+	
+	
+	
 }
