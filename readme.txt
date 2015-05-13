@@ -8,3 +8,8 @@ http://social.technet.microsoft.com/wiki/contents/articles/2980.ldap-over-ssl-ld
 1. disable user
 2. enable user
 3. reset password
+
+
+
+import the cert to your java system
+sudo keytool -import -keystore cacerts -file /Users/yhjhoo/Desktop/ldapOverSSL.cer
