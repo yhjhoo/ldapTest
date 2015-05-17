@@ -15,6 +15,8 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.ldap.control.SortControlDirContextProcessor;
@@ -35,19 +37,29 @@ import org.springframework.ldap.core.support.AggregateDirContextProcessor;
 
 
 
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={
+		"classpath*:Spring_*.xml"
+		})
 public class SpringLdapTest {
-//	static ApplicationContext ctx = new FileSystemXmlApplicationContext(
-//			new String[] { "WebContent/WEB-INF/spring/Spring_secure.xml", 
-//					"WebContent/WEB-INF/spring/Spring_database.xml", 
-//					"WebContent/WEB-INF/spring/Spring_admin.xml"});
-	static ApplicationContext ctx = new ClassPathXmlApplicationContext("Spring_secure.xml");
+//	static ApplicationContext ctx = new ClassPathXmlApplicationContext("Spring_secure.xml");
+//	private final Log log = LogFactory.getLog(this.getClass());
+//	static LdapTemplate ldapTemp = (LdapTemplate) ctx.getBean("ldapTemplate");
+//	static LdapUserDAO ldapUserDAO = (LdapUserDAO) ctx.getBean("LdapUserDAO");
+	
+	
 	private final Log log = LogFactory.getLog(this.getClass());
 	
-	static LdapTemplate ldapTemp = (LdapTemplate) ctx.getBean("ldapTemplate");
+	@Autowired
+	private LdapTemplate ldapTemp;
 	
-	static LdapUserDAO ldapUserDAO = (LdapUserDAO) ctx.getBean("LdapUserDAO");
+	@Autowired
+	private LdapUserDAO ldapUserDAO;
 	
 //	@Rule
 //	public ExpectedException exception = ExpectedException.none();
@@ -150,7 +162,7 @@ public class SpringLdapTest {
 	
 	@Test
 	public void testUpdateUserPassword() {
-		System.setProperty("javax.net.ssl.trustStore", "/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home/jre/lib/security/cacerts");
+//		System.setProperty("javax.net.ssl.trustStore", "/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home/jre/lib/security/cacerts");
 		ldapUserDAO.changePassword("Yang Hua Jie", "Password@123");
 		ldapUserDAO.login("Yang Hua Jie", "Password@123");
 		

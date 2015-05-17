@@ -52,13 +52,16 @@ public class LdapUserDAO {
     private static final int ADS_UF_DONT_EXPIRE_PASSWD = 0x10000;
     private static final int USER_CONTROL_NORMAL_USER = 512;
 
-    public void changePassword(String userName, String password) {
+    public boolean changePassword(String userName, String password) {
 		try {
 			ModificationItem item = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, new BasicAttribute(PASSWORD_ATTR_NAME, encodePassword(password)));
 			ldapTemp.modifyAttributes(getDnFrom(userName), new ModificationItem[]{item});
+			return true;
 		} catch (UnsupportedEncodingException e) {
 			log.error(e, e);
 		}
+		
+		return false;
         
     }
 
